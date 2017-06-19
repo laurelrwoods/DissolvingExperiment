@@ -1,9 +1,9 @@
-import boto3
+import boto3, socket, cv2, os
 from botocore.client import Config
-import socket
 
-ACCESS_KEY_ID = ''
-ACCESS_SECRET_KEY = ''
+
+ACCESS_KEY_ID = 'AKIAIPOFPDWJWMYM6TFQ'
+ACCESS_SECRET_KEY = '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'
 BUCKET_NAME = 'ice911'
 s3 = boto3.resource(
     's3',
@@ -20,11 +20,24 @@ def is_connected():
         pass
     return False
 
-data = open('download.jpg', 'rb')
-s3.Bucket(BUCKET_NAME).put_object(Key='Data/RateOfDissolving/download.jpg', Body=data) #replace data with img?
-print ("Image Uploaded")
+cam = cv2.VideoCapture(10)
+if cam.isOpened() and cam.read():
+    s, img = cam.read()
+    path = 'C:/Users/Laurel/PyCharmProjects/RateOfDissolvingExperiment/test_save.jpg'
+    cv2.imwrite(path, img)
+    print('Image saved')
+    if is_connected():
+        data = open(path, 'rb')
+        s3.Bucket(BUCKET_NAME).put_object(Key='Data/Material Decay Experiment, 6-19-17/%s' % path , Body=data)
+        data.close()
+        print ("Image Uploaded")
+        os.remove(path)
+        print("Image Deleted")
 
-#
+
+
+
+
 # if is_connected():
 #     data = open(path+pic_name, 'rb')
 #     key = 'RateOfDissolving/%s%s' %(path, picname)

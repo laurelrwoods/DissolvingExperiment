@@ -1,10 +1,13 @@
-import numpy as np
-import cv2
+import os
 
-img = cv2.imread('C:/Users/Laurel/PycharmProjects/RateOfDissolvingExperiment/download.jpg',-1)
-cv2.imshow('image',img)
-cv2.waitKey(0)
-img = cv2.flip(img, 0)
-cv2.imshow('image',img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+print(os.getcwd())
+
+# print(os.listdir('Pictures'))
+# print(os.listdir('Pictures/Beaker1'))
+
+for beaker in os.listdir('Pictures'):
+    path1 = 'Pictures/%s' % beaker
+    for cam in os.listdir(path1):
+        path2 = 'Pictures/%s/%s' % (beaker, cam)
+        print(os.listdir(path2))
+
