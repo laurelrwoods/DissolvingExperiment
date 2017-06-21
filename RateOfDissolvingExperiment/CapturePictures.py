@@ -6,8 +6,8 @@ from botocore.client import Config
 import socket
 import os
 
-ACCESS_KEY_ID = 'AKIAIPOFPDWJWMYM6TFQ'
-ACCESS_SECRET_KEY = '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'
+ACCESS_KEY_ID = ''
+ACCESS_SECRET_KEY = ''
 BUCKET_NAME = 'ice911'
 s3 = boto3.resource(
     's3',
