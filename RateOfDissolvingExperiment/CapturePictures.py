@@ -72,7 +72,27 @@ while pics_taken < desired_pictures:
                 print("Image Deleted")
         cam.release()
         cam_index += 1
-    pics_taken += 1
-    cam_index = 1
-    sleep(interval_in_seconds)
+        print(pics_taken)
+        if pics_taken % 2 == 0: #choose how often to check for non-uploaded pics
+            if is_connected():
+                beakers = os.listdir('Pictures')
+                for b in beakers:
+                    cams = os.listdir('Pictures/%s' % b)
+                    for c in cams:
+                        path = 'Pictures/%s/%s' % (b, c)
+                        if os.listdir(path):
+                            files = os.listdir(path)
+                            for f in files:
+                                path = 'Pictures/%s/%s/%s' % (b, c, f)
+                                print('path:', path)
+                                data = open(path, 'rb')
+                                s3.Bucket(BUCKET_NAME).put_object(Key='Data/Material Decay Experiment, 6-19-17/%s' % path,
+                                                                  Body=data)
+                                data.close()
+                                print("Image Recovered")
+                                os.remove(path)
+                                print('Image Removed')
+        pics_taken += 1
+        cam_index = 1
+        sleep(interval_in_seconds)
 
