@@ -38,8 +38,21 @@ do
 	fi
 	
 	filename=$(date +%y.%m.%d.%H.%M.%S)
-	fswebcam -d /dev/video$cam_index -r 2000x2000 /home/pi/Documents/MaterialDecay/$path$filename.jpg
+	echo $filename
+	
+	fswebcam -d /dev/video$cam_index -r 2000x2000 --no-banner -D 2 -S 30 /home/pi/Documents/MaterialDecay/$path$filename.jpg
+	filesize=$(stat -c %s /home/pi/Documents/MaterialDecay/$path$filename.jpg)
+	
+	while [ $filesize -lt 30000 ]
+	do
+		fswebcam -d /dev/video$cam_index -r 2000x2000 --no-banner -D 2 -S 30 /home/pi/Documents/MaterialDecay/$path$filename.jpg
+		filesize=$(stat -c %s /home/pi/Documents/MaterialDecay/$path$filename.jpg)
+	done
 
+#	if [[ TEST FOR SIDECAMS ]]
+#	then
+#		convert $path$filename.jpg -rotate 180 $path$filename.jpg
+#	fi
 	wget -q --tries=10 --timeout=20 --spider http://google.com
 	if [ $? -eq 0 ]
 	then
