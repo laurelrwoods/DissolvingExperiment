@@ -1,10 +1,13 @@
 #!/bin/bash
 
 cam_index=0
-num_cams=2
+num_cams=10
 
 while [ $cam_index -lt $num_cams ]
 do
+
+#adjust for camera order 
+
 	if [ $cam_index -eq 0 ]
 	then
 		path=Pictures/Beaker1/TopCam/
